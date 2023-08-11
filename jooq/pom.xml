@@ -11,7 +11,14 @@
     <name>jooq</name>
     <description>jooq</description>
     <packaging>jar</packaging>
-    
+
+    <properties>
+        <jdbc.url>jdbc:mysql://localhost:3306/library</jdbc.url>
+        <jdbc.driver>com.mysql.cj.jdbc.Driver</jdbc.driver>
+        <jdbc.user>root</jdbc.user>
+        <jdbc.password>123456</jdbc.password>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -19,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -42,32 +49,36 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-codegen</artifactId>
-        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <jdbc>
+                        <driver>${jdbc.driver}</driver>
+                        <url>${jdbc.url}</url>
+                        <user>${jdbc.user}</user>
+                        <password>${jdbc.password}</password>
+                    </jdbc>
+
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <inputSchema>library</inputSchema>
+                        </database>
+                        <generate/>
+                        <target>
+                            <packageName>com.horaoen.example4j.jooq.database</packageName>
+                            <directory>src/main/java</directory>
+                        </target>
+                    </generator>
                 </configuration>
             </plugin>
         </plugins>
