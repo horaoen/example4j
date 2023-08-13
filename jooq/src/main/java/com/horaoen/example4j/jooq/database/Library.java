@@ -5,6 +5,7 @@ package com.horaoen.example4j.jooq.database;
 
 
 import com.horaoen.example4j.jooq.database.tables.Author;
+import com.horaoen.example4j.jooq.database.tables.Book;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,11 @@ public class Library extends SchemaImpl {
     public final Author AUTHOR = Author.AUTHOR;
 
     /**
+     * The table <code>library.book</code>.
+     */
+    public final Book BOOK = Book.BOOK;
+
+    /**
      * No further instances allowed
      */
     private Library() {
@@ -48,7 +54,8 @@ public class Library extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            Author.AUTHOR
+            Author.AUTHOR,
+            Book.BOOK
         );
     }
 }

@@ -8,15 +8,17 @@ import com.horaoen.example4j.jooq.database.Keys;
 import com.horaoen.example4j.jooq.database.Library;
 import com.horaoen.example4j.jooq.database.tables.records.AuthorRecord;
 
+import java.time.LocalDate;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -52,17 +54,32 @@ public class Author extends TableImpl<AuthorRecord> {
     /**
      * The column <code>library.author.id</code>.
      */
-    public final TableField<AuthorRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<AuthorRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>library.author.first_name</code>.
      */
-    public final TableField<AuthorRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<AuthorRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>library.author.last_name</code>.
      */
-    public final TableField<AuthorRecord, String> LAST_NAME = createField(DSL.name("last_name"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<AuthorRecord, String> LAST_NAME = createField(DSL.name("last_name"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>library.author.date_of_birth</code>.
+     */
+    public final TableField<AuthorRecord, LocalDate> DATE_OF_BIRTH = createField(DSL.name("date_of_birth"), SQLDataType.LOCALDATE, this, "");
+
+    /**
+     * The column <code>library.author.year_of_birth</code>.
+     */
+    public final TableField<AuthorRecord, Integer> YEAR_OF_BIRTH = createField(DSL.name("year_of_birth"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>library.author.address</code>.
+     */
+    public final TableField<AuthorRecord, String> ADDRESS = createField(DSL.name("address"), SQLDataType.VARCHAR(50), this, "");
 
     private Author(Name alias, Table<AuthorRecord> aliased) {
         this(alias, aliased, null);
@@ -100,6 +117,11 @@ public class Author extends TableImpl<AuthorRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Library.LIBRARY;
+    }
+
+    @Override
+    public Identity<AuthorRecord, Integer> getIdentity() {
+        return (Identity<AuthorRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -147,18 +169,18 @@ public class Author extends TableImpl<AuthorRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Integer, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row6<Integer, String, String, LocalDate, Integer, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super Integer, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Integer, ? super String, ? super String, ? super LocalDate, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -166,7 +188,7 @@ public class Author extends TableImpl<AuthorRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super Integer, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Integer, ? super String, ? super String, ? super LocalDate, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

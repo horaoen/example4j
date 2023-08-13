@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jdbc.url>jdbc:mysql://localhost:3306/library</jdbc.url>
+        <jdbc.url>jdbc:mysql://localhost:3306/library?createDatabaseIfNotExist=true</jdbc.url>
         <jdbc.driver>com.mysql.cj.jdbc.Driver</jdbc.driver>
         <jdbc.user>root</jdbc.user>
         <jdbc.password>123456</jdbc.password>
@@ -71,6 +71,9 @@
                         <database>
                             <name>org.jooq.meta.mysql.MySQLDatabase</name>
                             <includes>.*</includes>
+                            <excludes>
+                                schema_version
+                            </excludes>
                             <inputSchema>library</inputSchema>
                         </database>
                         <generate/>
@@ -79,6 +82,20 @@
                             <directory>src/main/java</directory>
                         </target>
                     </generator>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+
+                <configuration>
+                    <url>${jdbc.url}</url>
+                    <user>${jdbc.user}</user>
+                    <password>${jdbc.password}</password>
+                    <driver>${jdbc.driver}</driver>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
                 </configuration>
             </plugin>
         </plugins>

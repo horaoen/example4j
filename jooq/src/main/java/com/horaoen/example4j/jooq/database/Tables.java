@@ -5,6 +5,7 @@ package com.horaoen.example4j.jooq.database;
 
 
 import com.horaoen.example4j.jooq.database.tables.Author;
+import com.horaoen.example4j.jooq.database.tables.Book;
 
 
 /**
@@ -17,4 +18,9 @@ public class Tables {
      * The table <code>library.author</code>.
      */
     public static final Author AUTHOR = Author.AUTHOR;
+
+    /**
+     * The table <code>library.book</code>.
+     */
+    public static final Book BOOK = Book.BOOK;
 }
