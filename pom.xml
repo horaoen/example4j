@@ -17,6 +17,7 @@
         <lombok.version>1.18.28</lombok.version>
         <springboot.version>3.0.6</springboot.version>
         <jooq.version>3.17.12</jooq.version>
+        <surefire.version>3.1.2</surefire.version>
     </properties>
 
     <modules>
@@ -26,6 +27,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -48,6 +54,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.version}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -79,7 +90,6 @@
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
                     <version>3.0</version>
-
                     <executions>
                         <execution>
                             <phase>generate-sources</phase>
