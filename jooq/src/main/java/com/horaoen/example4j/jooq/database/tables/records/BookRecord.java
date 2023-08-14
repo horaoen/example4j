@@ -50,16 +50,16 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
     }
 
     /**
-     * Setter for <code>library.book.title</code>.
+     * Setter for <code>library.book.le_titre</code>.
      */
-    public void setTitle(String value) {
+    public void setLeTitre(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>library.book.title</code>.
+     * Getter for <code>library.book.le_titre</code>.
      */
-    public String getTitle() {
+    public String getLeTitre() {
         return (String) get(2);
     }
 
@@ -98,7 +98,7 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
 
     @Override
     public Field<String> field3() {
-        return Book.BOOK.TITLE;
+        return Book.BOOK.LE_TITRE;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
 
     @Override
     public String component3() {
-        return getTitle();
+        return getLeTitre();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
 
     @Override
     public String value3() {
-        return getTitle();
+        return getLeTitre();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
 
     @Override
     public BookRecord value3(String value) {
-        setTitle(value);
+        setLeTitre(value);
         return this;
     }
 
@@ -171,11 +171,11 @@ public class BookRecord extends UpdatableRecordImpl<BookRecord> implements Recor
     /**
      * Create a detached, initialised BookRecord
      */
-    public BookRecord(Integer id, Integer authorId, String title) {
+    public BookRecord(Integer id, Integer authorId, String leTitre) {
         super(Book.BOOK);
 
         setId(id);
         setAuthorId(authorId);
-        setTitle(title);
+        setLeTitre(leTitre);
     }
 }

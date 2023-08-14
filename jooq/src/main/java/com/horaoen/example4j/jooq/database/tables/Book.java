@@ -62,9 +62,9 @@ public class Book extends TableImpl<BookRecord> {
     public final TableField<BookRecord, Integer> AUTHOR_ID = createField(DSL.name("author_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>library.book.title</code>.
+     * The column <code>library.book.le_titre</code>.
      */
-    public final TableField<BookRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(400).nullable(false), this, "");
+    public final TableField<BookRecord, String> LE_TITRE = createField(DSL.name("le_titre"), SQLDataType.VARCHAR(400).nullable(false), this, "");
 
     private Book(Name alias, Table<BookRecord> aliased) {
         this(alias, aliased, null);
