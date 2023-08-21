@@ -13,10 +13,9 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jdbc.url>jdbc:mysql://localhost:3306/library?createDatabaseIfNotExist=true</jdbc.url>
-        <jdbc.driver>com.mysql.cj.jdbc.Driver</jdbc.driver>
-        <jdbc.user>root</jdbc.user>
-        <jdbc.password>123456</jdbc.password>
+        <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
+        <db.user>root</db.user>
+        <db.password>123456</db.password>
     </properties>
 
     <dependencies>
@@ -35,6 +34,10 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
@@ -49,24 +52,88 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <db.username>${db.user}</db.username>
+                        <db.url>${db.url}</db.url>
+                        <db.password>${db.password}</db.password>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import org.testcontainers.containers.MySQLContainer
+
+                                db = new MySQLContainer(
+                                        "mysql:latest")
+                                        .withUsername("${db.user}")
+                                        .withDatabaseName("library")
+                                        .withPassword("${db.password}")
+                                db.start()
+                                project.properties.setProperty('db.url', db.getJdbcUrl())
+                                println("...aaa" + db.username, db.jdbcUrl)
+
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
+                    <driver>${db.driver}</driver>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${db.url}</url>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <configuration>
                     <jdbc>
-                        <driver>${jdbc.driver}</driver>
-                        <url>${jdbc.url}</url>
-                        <user>${jdbc.user}</user>
-                        <password>${jdbc.password}</password>
+                        <driver>${db.driver}</driver>
+                        <user>${db.user}</user>
+                        <password>${db.password}</password>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <url>${db.url}</url>
                     </jdbc>
-
                     <generator>
                         <database>
                             <name>org.jooq.meta.mysql.MySQLDatabase</name>
@@ -82,20 +149,6 @@
                             <directory>src/main/java</directory>
                         </target>
                     </generator>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-
-                <configuration>
-                    <url>${jdbc.url}</url>
-                    <user>${jdbc.user}</user>
-                    <password>${jdbc.password}</password>
-                    <driver>${jdbc.driver}</driver>
-                    <locations>
-                        <location>filesystem:src/main/resources/db/migration</location>
-                    </locations>
                 </configuration>
             </plugin>
         </plugins>

@@ -17,11 +17,20 @@
         <lombok.version>1.18.28</lombok.version>
         <springboot.version>3.0.6</springboot.version>
         <jooq.version>3.17.12</jooq.version>
+        <testcontainer.version>1.18.3</testcontainer.version>
+        <testcontainers-jooq-codegen-maven-plugin.version>0.0.2</testcontainers-jooq-codegen-maven-plugin.version>
+        <mysql.version>8.0.32</mysql.version>
+        <hutool.version>5.8.16</hutool.version>
+        <jedis.version>3.7.0</jedis.version>
+
+        <!-- plugins-->
+        <groovy.maven.plugin.version>2.1.1</groovy.maven.plugin.version>
         <surefire.version>3.1.2</surefire.version>
     </properties>
 
     <modules>
         <module>jooq</module>
+        <module>testcontainer</module>
     </modules>
     <dependencies>
         <dependency>
@@ -49,6 +58,26 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainer.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
@@ -98,6 +127,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>groovy-maven-plugin</artifactId>
+                    <version>${groovy.maven.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
