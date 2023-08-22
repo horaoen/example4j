@@ -24,8 +24,9 @@
         <jedis.version>3.7.0</jedis.version>
 
         <!-- plugins-->
-        <groovy.maven.plugin.version>2.1.1</groovy.maven.plugin.version>
+        <groovy.plugin.version>2.1.1</groovy.plugin.version>
         <surefire.version>3.1.2</surefire.version>
+        <flyway.version>3.0</flyway.version>
     </properties>
 
     <modules>
@@ -105,33 +106,16 @@
                     <groupId>org.jooq</groupId>
                     <artifactId>jooq-codegen-maven</artifactId>
                     <version>${jooq.version}</version>
-                    <executions>
-                        <execution>
-                            <id>jooq-codegen</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>3.0</version>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>migrate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <version>${flyway.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.gmaven</groupId>
                     <artifactId>groovy-maven-plugin</artifactId>
-                    <version>${groovy.maven.plugin.version}</version>
+                    <version>${groovy.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
